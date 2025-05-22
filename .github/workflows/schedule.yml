@@ -2,7 +2,7 @@ name: Scheduled Adjarabet Script
 
 on:
   schedule:
-    - cron: '1 0,12 * * *'
+    - cron: '1 20,8 * * *'
   workflow_dispatch:
 
 jobs:
