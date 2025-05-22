@@ -26,10 +26,10 @@ const accounts = fs.readFileSync('accounts.txt', 'utf-8')
       await page.click('xpath=/html/body/my-app/div/app-header-wrapper/app-header-desktop/div/div/div/div/adj-login/div/div/div/form/div[2]/button');
 
       // 3. Подождать авторизацию и перейти к iframe
-      await page.waitForTimeout(3000); // можно заменить на page.waitForNavigation() если нужно точнее
+      await page.waitForTimeout(5000); // можно заменить на page.waitForNavigation() если нужно точнее
 
       await page.goto('https://promos.www.adjarabet.am/spinland/');
-      await page.waitForTimeout(2000);
+      await page.waitForTimeout(3000);
 
       // 4. Клик на кнопку запуска
       await page.click('xpath=/html/body/div[7]/div[6]/div[4]/div[2]/div/div[2]/div[5]');
