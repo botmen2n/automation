@@ -2,7 +2,7 @@ name: Scheduled Adjarabet Script
 
 on:
   schedule:
-    - cron: '1 20,8 * * *'
+    - cron: '1 20,8 * * *'  # Запуск каждый день в 00:01 и 12:01 по Еревану (GMT+4)
   workflow_dispatch:
 
 jobs:
@@ -18,14 +18,14 @@ jobs:
         with:
           node-version: '18'
 
-      - name: Init npm project (если package.json нет)
+      - name: Ensure npm project initialized
         run: |
           if [ ! -f package.json ]; then
             npm init -y
           fi
 
-      - name: Install Playwright
-        run: npm install playwright
+      - name: Install dependencies
+        run: npm install
 
       - name: Install Playwright Browsers
         run: npx playwright install --with-deps
