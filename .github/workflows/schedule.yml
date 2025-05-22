@@ -18,6 +18,9 @@ jobs:
         with:
           node-version: '18'
 
+      - name: Create Playwright cache directory
+        run: mkdir -p ~/.cache/ms-playwright
+
       - name: Cache Playwright browsers
         uses: actions/cache@v3
         with:
@@ -26,7 +29,7 @@ jobs:
           restore-keys: |
             ${{ runner.os }}-playwright-
 
-      - name: Ensure npm project initialized
+      - name: Init npm project (если package.json нет)
         run: |
           if [ ! -f package.json ]; then
             npm init -y
