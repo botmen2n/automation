@@ -2,7 +2,7 @@ name: Scheduled Adjarabet Script
 
 on:
   schedule:
-    - cron: '1 20,8 * * *'  # Запуск каждый день в 00:01 и 12:01 по Еревану (GMT+4)
+    - cron: '1 20,8 * * *'  # 00:01 и 12:01 по Армении (UTC+4)
   workflow_dispatch:
 
 jobs:
@@ -17,6 +17,14 @@ jobs:
         uses: actions/setup-node@v3
         with:
           node-version: '18'
+
+      - name: Cache Playwright browsers
+        uses: actions/cache@v3
+        with:
+          path: ~/.cache/ms-playwright
+          key: ${{ runner.os }}-playwright-${{ hashFiles('**/package-lock.json') }}
+          restore-keys: |
+            ${{ runner.os }}-playwright-
 
       - name: Ensure npm project initialized
         run: |
