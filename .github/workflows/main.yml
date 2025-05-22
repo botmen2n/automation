@@ -1,0 +1,25 @@
+name: Scheduled Adjarabet Script
+
+on:
+  schedule:
+    - cron: '1 0,12 * * *'  # каждый день в 00:01 и 12:01 по UTC
+  workflow_dispatch:
+
+jobs:
+  run-script:
+    runs-on: ubuntu-latest
+
+    steps:
+    - name: Checkout repo
+      uses: actions/checkout@v3
+
+    - name: Setup Node.js
+      uses: actions/setup-node@v3
+      with:
+        node-version: '18'
+
+    - name: Install dependencies
+      run: npm install
+
+    - name: Run script
+      run: npm start
