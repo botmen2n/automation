@@ -34,8 +34,11 @@ const accounts = fs.readFileSync('accounts.txt', 'utf-8')
 
       // 3. Подождать авторизацию и перейти к iframe
       await page.waitForTimeout(3000); // можно заменить на page.waitForNavigation() если нужно точнее
+      await page.waitForSelector('#promoIframe');
+      const iframeUrl = await page.getAttribute('#promoIframe', 'src');
+      if (!iframeUrl) throw new Error('❌ Не удалось получить ссылку из iframe');
 
-      await page.goto('https://promos.www.adjarabet.am/spinland/');
+      await page.goto(iframeUrl);
       await page.waitForTimeout(2000);
 
       // 4. Клик на кнопку запуска
