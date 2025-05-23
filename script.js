@@ -14,7 +14,7 @@ const accounts = fs.readFileSync('accounts.txt', 'utf-8')
     console.log(`🔐 Логин под аккаунтом: ${login}`);
 
     const browser = await chromium.launch({ 
-      headless: true, 
+      headless: false, 
       proxy: {
         server: 'http://185.155.233.218:50100',
         username: 'furkultra2023',
@@ -32,21 +32,23 @@ const accounts = fs.readFileSync('accounts.txt', 'utf-8')
       await page.fill('xpath=/html/body/my-app/div/app-header-wrapper/app-header-desktop/div/div/div/div/adj-login/div/div/div/form/div[1]/div[2]/div/input', password);
       await page.click('xpath=/html/body/my-app/div/app-header-wrapper/app-header-desktop/div/div/div/div/adj-login/div/div/div/form/div[2]/button');
 
-      // 3. Подождать авторизацию и перейти к iframe
-      await page.waitForTimeout(3000); // можно заменить на page.waitForNavigation() если нужно точнее
+      // 3. Подождать авторизацию и дождаться iframe
+      await page.waitForTimeout(3000);
       await page.waitForSelector('#promoIframe');
-      const iframeUrl = await page.getAttribute('#promoIframe', 'src');
-      if (!iframeUrl) throw new Error('❌ Не удалось получить ссылку из iframe');
 
-      await page.goto(iframeUrl);
-      await page.waitForTimeout(2000);
+      // Получаем сам iframe
+      const elementHandle = await page.$('#promoIframe');
+      const frame = await elementHandle.contentFrame(); // Переход в iframe-контекст
+      if (!frame) throw new Error('❌ Не удалось получить содержимое iframe');
 
-      // 4. Клик на кнопку запуска
-      await page.click('xpath=/html/body/div[7]/div[6]/div[4]/div[2]/div/div[2]/div[5]');
-      await page.waitForTimeout(1000);
-      await page.click('xpath=/html/body/div[7]/div[6]/div[4]/div[2]/div/div[1]/div[8]/div/div[2]/div/div[2]/div[1]');
+      await frame.waitForTimeout(2000);
 
-      await page.waitForTimeout(2000);
+      // 4. Клик на кнопку запуска внутри iframe
+      await frame.click('xpath=/html/body/div[7]/div[6]/div[4]/div[2]/div/div[2]/div[5]');
+      await frame.waitForTimeout(1000);
+      await frame.click('xpath=/html/body/div[7]/div[6]/div[4]/div[2]/div/div[1]/div[8]/div/div[2]/div/div[2]/div[1]');
+
+      await frame.waitForTimeout(2000);
 
       console.log(`✅ Колесо прокручено для: ${login}`);
     } catch (err) {
