@@ -14,7 +14,7 @@ const accounts = fs.readFileSync('accounts.txt', 'utf-8')
     console.log(`🔐 Логин под аккаунтом: ${login}`);
 
     const browser = await chromium.launch({ 
-      headless: false, 
+      headless: true, 
       proxy: {
         server: 'http://185.155.233.218:50100',
         username: 'furkultra2023',
